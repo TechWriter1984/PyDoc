@@ -21,13 +21,13 @@ pip install git+https://github.com/yourusername/AutoDoc.git
 2. After registering on volcengine (https://console.volcengine.com/translate/usage), create and select (if there are multiple Glossaries) your own Glossary (optional).
 3. usage: autodoc.py [-h] -i INPUT -o OUTPUT [-p] [-t]
 
-Process and translate Word documents.
+   Process and translate Word documents.
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -i INPUT, --input INPUT
+   optional arguments:
+      -h, --help            show this help message and exit
+      -i INPUT, --input INPUT
                         Input Word document path.
-  -o OUTPUT, --output OUTPUT
+      -o OUTPUT, --output OUTPUT
                         Output Word document path.
-  -p, --preprocess      Preprocess the document before translation.
-  -t, --translate       Translate the document
+      -p, --preprocess      Preprocess the document before translation.
+      -t, --translate       Translate the document

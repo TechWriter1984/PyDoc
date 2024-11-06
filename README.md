@@ -18,8 +18,9 @@ pip install git+https://github.com/yourusername/AutoDoc.git
 
 0. The styles of MS Word files are controlled based on YOUR OWN MS Word Style Template!!!
 1. ID and Password of volcengine machine translation is required since the Translation feature is based on volcengine's machine translation API. In the future there will be more translation solutions to come.
-2. After registering on volcengine (https://console.volcengine.com/translate/usage), create and select (if there are multiple Glossaries) your own Glossary (optional).
-3. usage: autodoc.py [-h] -i INPUT -o OUTPUT [-p] [-t]
+2. Set up your ACCESS_KEY_ID and ACCESS_KEY_SECET in the .env file in the root folder of AutoDoc.
+3. After registering on volcengine (https://console.volcengine.com/translate/usage), create and select (if there are multiple Glossaries) your own Glossary (optional).
+4. usage: autodoc.py [-h] -i INPUT -o OUTPUT [-p] [-t]
 
    Process and translate Word documents.
 

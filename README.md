@@ -10,7 +10,7 @@ pip install -r requirements.txt
 
 or
 
-pip install git+https://github.com/yourusername/AutoDoc.git
+pip install git@github.com:TechWriter1984/AutoDoc.git
 
 ## How to Use
 

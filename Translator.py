@@ -200,54 +200,6 @@ class Translator:
                 new_paragraph.style = style
         return new_paragraph
 
-    # def translate_word_file(self, input_path, output_path):
-    #     try:
-    #         doc = docx.Document(input_path)
-
-    #         # Translate paragraphs in the main document body
-    #         for para in doc.paragraphs:
-    #             original_text = para.text
-    #             if original_text:
-    #                 translated_text = self.translate_text(original_text)
-    #                 # Insert translated text after the original paragraph
-    #                 new_para = self.insert_paragraph_after(para, text=translated_text, style=para.style)
-    #                 new_para.style = para.style  # Match the style of the original paragraph
-
-    #         # Translate text in tables, applying styles for headers and content
-    #         translated_text_cache = {}
-    #         for table in doc.tables:
-    #             for row_index, row in enumerate(table.rows):
-    #                 for cell in row.cells:
-    #                     original_text = cell.text
-    #                     if original_text and (row_index, cell) not in translated_text_cache:
-    #                         # Cache translation to avoid duplicate translation of the same text
-    #                         translated_text = self.translate_text(original_text)
-    #                         translated_text_cache[(row_index, cell)] = translated_text
-
-    #                         # Determine style based on row index
-    #                         if row_index == 0:
-    #                             # Apply header style for the first row
-    #                             cell_style = "_表格_表头标题行_hs_en"
-    #                         else:
-    #                             # Apply content style for all other rows
-    #                             cell_style = "_表格_正文格式_hs_en"
-
-    #                         # Clear cell text only once before adding new content
-    #                         cell.text = ""
-
-    #                         # Add original and translated text with applied style
-    #                         para = cell.add_paragraph(original_text)
-    #                         para.style = cell_style
-    #                         translated_para = cell.add_paragraph(translated_text)
-    #                         translated_para.style = cell_style
-
-    #         # Save the translated document to the specified output path
-    #         doc.save(output_path)
-    #         print(f"Translation complete. Document saved to: {output_path}")
-
-    #     except Exception as e:
-    #         print(f"An error occurred during document translation: {e}")
-
     def translate_word_file(self, input_path, output_path):
         """
         Translates a Word document and inserts the translated content into the original document.

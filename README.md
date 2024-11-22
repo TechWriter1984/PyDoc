@@ -8,10 +8,6 @@ Clone the repo and run the following command to install the dependencies:
 
 pip install -r requirements.txt
 
-or:
-
-pip install pydoc
-
 ## How to Use
 
 ### Prerequisites

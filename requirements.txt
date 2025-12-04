@@ -1,2 +1,4 @@
 python-docx
 requests
+deep-translator
+python-dotenv

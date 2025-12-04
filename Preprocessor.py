@@ -6,39 +6,58 @@ class Preprocessor:
 
     def delete_before_heading1(self, doc):
         """
-        Deletes all pre-body content in the document.
+        删除文档中第一个"Heading 1"之前的所有内容。
+        
+        参数:
+            doc (Document): 要处理的docx文档对象
+        
+        功能:
+            1. 获取文档正文中的所有元素
+            2. 遍历查找第一个"Heading 1"样式的段落
+            3. 如果找到，删除该段落之前的所有内容
+            4. 如果未找到，不执行任何操作
         """
         body = doc.element.body
-        elements = list(body)  # Obtain all elements in the document (paragraphs and tables)
-
+        elements = list(body)  # 获取文档中的所有元素(段落和表格)
+    
         for idx, element in enumerate(elements):
-            if element.tag.endswith('p'): # Check if it's a paragraph element
+            if element.tag.endswith('p'):  # 检查是否是段落元素
                 para = docx.text.paragraph.Paragraph(element, doc)
                 if para.style and para.style.name == "Heading 1":
-                    # Delete all elements before the first "Heading 1"
+                    # 删除第一个"Heading 1"之前的所有元素
                     for e in elements[:idx]:
                         body.remove(e)
-                    print("All pre-body content has been deleted.")
+                    print("所有正文前内容已被删除。")
                     return
-        print("Unable to find Heading 1 in the document, no content deleted.")
+        print("文档中未找到Heading 1，未删除任何内容。")
 
     def delete_headers_footers(self, doc):
         """
-        Delete all headers and footers from the document.
+        删除文档中的所有页眉和页脚内容。
+        
+        参数:
+            doc (Document): 要处理的docx文档对象
+        
+        功能:
+            1. 遍历文档的所有节(section)
+            2. 取消页眉页脚与前一节的链接
+            3. 删除每个节中页眉和页脚的所有段落
         """
         for section in doc.sections:
-            # Delete headers and footers
+            # 取消页眉页脚与前一节的链接
             section.header.is_linked_to_previous = False
             section.footer.is_linked_to_previous = False
-
+    
+            # 删除页眉中的所有段落
             for paragraph in section.header.paragraphs:
                 p = paragraph._element
                 p.getparent().remove(p)
+            # 删除页脚中的所有段落
             for paragraph in section.footer.paragraphs:
                 p = paragraph._element
                 p.getparent().remove(p)
-
-        print("All headers and footers have been deleted.")
+    
+        print("所有页眉和页脚已被删除。")
 
     def remove_watermark(self, doc):
         """

@@ -147,7 +147,7 @@ class Translator:
                 headers=header,
                 params=request_param["query"],
                 data=request_param["body"],
-                proxies={}
+                proxies={},
             )
             print(f"Received response status code: {r.status_code}, content: {r.content}")
             r.raise_for_status()
@@ -185,10 +185,19 @@ class Translator:
         else:
             print(f"Unexpected result: {result}")
             return "Failed to obtain translation result."
-        print(f"Error in translate_text: Unknown result format. Text: {text}, Result: {result}")
-        return "Failed to obtain translation result."
 
     def insert_paragraph_after(self, para, text=None, style=None):
+        """
+        Inserts a new paragraph after the given paragraph with the specified text and style.
+
+        Args:
+            para (docx.text.paragraph.Paragraph): The paragraph after which the new paragraph will be inserted.
+            text (str, optional): The text content of the new paragraph. Defaults to None.
+            style (docx.styles.style.Style, optional): The style of the new paragraph. Defaults to None.
+
+        Returns:
+            docx.text.paragraph.Paragraph: The newly inserted paragraph object.
+        """
         new_para = OxmlElement("w:p")
         para._element.addnext(new_para)
         new_paragraph = docx.text.paragraph.Paragraph(new_para, para._parent)
@@ -201,59 +210,37 @@ class Translator:
         return new_paragraph
 
     def translate_word_file(self, input_path, output_path):
-        """
-        Translates a Word document and inserts the translated content into the original document.
+            """Translate the document and add translation text below the original text while retaining styles."""
+            doc = docx.Document(input_path)
 
-        This method reads a Word document from the specified input path, translates the content of each paragraph and table cell,
-        and inserts the translated content into the original document. The translated document is saved to the specified output path.
+            # Translate all paragraphs
+            for para in doc.paragraphs:
+                original_text = para.text
+                if original_text:
+                    translated_text = self.translate_text(original_text)
+                    new_para = self.insert_paragraph_after(para, text=translated_text, style=para.style)
 
-        Args:
-            input_path (str): The path to the input Word document.
-            output_path (str): The path to save the translated Word document.
+            # Translate all tables, using a cache to avoid duplicate translations
+            translated_table_cells = {}
 
-        Returns:
-            None
+            # Iterate through all tables
+            for table in doc.tables:
+                for row in table.rows:
+                    for cell in row.cells:
+                        original_text = cell.text.strip()
+                        if original_text:
+                            if (row, cell) not in translated_table_cells:
+                                lines = original_text.splitlines()
+                                translated_lines = [self.translate_text(line) for line in lines]
+                                translated_table_cells[(row, cell)] = translated_lines
+                            else:
+                                translated_lines = translated_table_cells[(row, cell)]
+                            
+                            cell.text = ""
+                            for line, translated_line in zip(lines, translated_lines):
+                                para = cell.add_paragraph(line)
+                                translated_para = cell.add_paragraph(translated_line)
+                                translated_para.style = para.style
 
-        Raises:
-            Exception: If an error occurs during document translation, an exception is raised.
-
-        """
-        doc = docx.Document(input_path)
-
-        # Traverse all paragraphs
-        for para in doc.paragraphs:
-            original_text = para.text
-            if original_text:
-                # Translate the paragraph content
-                translated_text = self.translate_text(original_text)
-                # Insert translated text after the original paragraph
-                new_para = self.insert_paragraph_after(para, text=translated_text, style=para.style)
-
-        # Record the translated text for each table cell using a dictionary
-        translated_table_cells = {}
-
-        # Traverse all tables
-        for table in doc.tables:
-            for row in table.rows:
-                for cell in row.cells:
-                    original_text = cell.text.strip()
-                    if original_text:
-                        # Check the cache to avoid duplicate translation of the same text
-                        if (row, cell) not in translated_table_cells:
-                            # Translate by line if the text contains multiple lines
-                            lines = original_text.splitlines()
-                            translated_lines = [self.translate_text(line) for line in lines]
-                            translated_table_cells[(row, cell)] = translated_lines
-                        else:
-                            translated_lines = translated_table_cells[(row, cell)]
-                        
-                        # Clear the cell text and add translated content
-                        cell.text = ""
-                        for line, translated_line in zip(lines, translated_lines):
-                            para = cell.add_paragraph(line)
-                            translated_para = cell.add_paragraph(translated_line)
-                            translated_para.style = para.style  # Adopt the style of the original paragraph
-
-        # Save the translated document to the specified output path
-        doc.save(output_path)
-        print(f"Translation complete. Document saved to: {output_path}")
+            doc.save(output_path)
+            print(f"Translation completed. Document saved at: {output_path}")

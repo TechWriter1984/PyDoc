@@ -17,6 +17,6 @@ class FileChecker:
 # 测试代码
 if __name__ == "__main__":
     # 替换为你的文件路径
-    file_path = "D:\doc_marco_dev\data\input\(HS-SC-CT10W0C3) Hanshow Smart Cart Installation Manual V1.0.1.docx"
+    file_path = "D:\\PyDoc\\data\\output\\01-02-35汉朔电子价签抗撞击测试标准V1.1.0.docx"
     checker = FileChecker(file_path)
     checker.print_paragraph_styles_and_xml()

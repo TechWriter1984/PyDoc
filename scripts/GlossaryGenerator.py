@@ -17,9 +17,9 @@ def generate_geolocation_file(cn_file, en_file, output_file):
     print(f"Geolocation data has been written to {output_file}")
 
 # Define file paths
-cn_file = 'D:\doc_marco_dev\data\input\cn.json'
-en_file = 'D:\doc_marco_dev\data\input\en.json'
-output_file = 'D:\doc_marco_dev\data\output\geolocation.txt'
+cn_file = 'D:\PyDoc\data\input\geolocation-cn-glossary.json'
+en_file = 'D:\PyDoc\data\input\geolocation-en-glossary.json'
+output_file = 'D:\PyDoc\data\output\geolocation_glossary.txt'
 
 # Generate the geolocation file
 generate_geolocation_file(cn_file, en_file, output_file)

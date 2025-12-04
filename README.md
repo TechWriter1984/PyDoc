@@ -68,6 +68,16 @@ pip install -r requirements.txt
 
    Preprocess and translate a doc using DeepL: `python pydoc.py -p --deepl -i "{absolute_path_to_input_file}" -o "{absolute_path_to_output_file}"`
 
+   Convert PPT to Excel with unit conversion: `python scripts/ppt2excel.py -i "{absolute_path_to_input_ppt}" -o "{absolute_path_to_output_excel}"`
+
+   The ppt2excel.py script converts PowerPoint slides to Excel sheets, with the following features:
+   - Extracts text and table content from each slide
+   - Automatically converts units for specific cells:
+     - Converts mm to inches (1 decimal place) for dimensions
+     - Converts °C to °F (integer values) for temperature ranges
+   - Supports both '~' and '-' as temperature range separators
+   - Updates header text to show converted units
+
    DeepL Glossary JSON Format Example:
    ```json
    [
